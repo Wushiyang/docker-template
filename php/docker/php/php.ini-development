@@ -1,0 +1,7 @@
+mysqli.default_socket = /server/mysql/tmp/mysql.sock
+display_errors = Off
+[xdebug]
+xdebug.remote_enable = 1
+xdebug.remote_autostart = 1
+xdebug.remote_host = 192.168.10.53
+xdebug.remote_port = 19000

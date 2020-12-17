@@ -1,0 +1,36 @@
+version: '3'
+networks:
+  app-tier:
+    driver: bridge
+services:
+  nginx:
+    build: ./docker/nginx
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/conf.d:/home/nginx/conf.d
+      - ./docker/nginx/log:/home/nginx/log
+      - ./public:/app/365luntan
+    ports:
+      - '80:80'
+    networks:
+      - app-tier
+    depends_on:
+      - phpfpm
+    restart: always
+    container_name: 365luntan_nginx
+  phpfpm:
+    build: ./docker/php
+    volumes:
+      - ./docker/php/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./docker/php/php.ini-development:/usr/local/etc/php/php.ini
+      - ./public:/app/365luntan
+    networks:
+      - app-tier
+    restart: always
+    container_name: 365luntan_phpfpm
+  mysql:
+    build: ./docker/db
+    ports:
+      - '3306:3306'
+    networks:
+      - app-tier
